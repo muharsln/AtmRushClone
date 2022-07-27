@@ -1,24 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AtmRushClone.Camera
 {
     public class CameraController : MonoBehaviour
     {
-        public static CameraController Instance { get; private set; }
+        [Header("Camera Follow")]
+        [SerializeField] private Transform _target;
+        [SerializeField] private float _lerpSpeed = 1f;
 
-        private Animator _camAnim;
+        private Animator _animator;
 
-        private void Awake()
+        private void Start()
         {
-            Instance = this;
-            _camAnim = GetComponent<Animator>();
+            _animator = GetComponent<Animator>();
         }
 
-        public void CameraAnimActive()
+        private void LateUpdate()
         {
-            _camAnim.SetBool("Rotate", true);
+            if (GameManager.Instance.gameStat == GameManager.GameStat.Play)
+            {
+                transform.localPosition = Vector3.Lerp(transform.localPosition,
+                    new Vector3(_target.localPosition.x, transform.localPosition.y,
+                    transform.localPosition.z), _lerpSpeed * Time.deltaTime);
+            }
         }
+
+        public void CameraAnimFalse() => _animator.enabled = false;
+
+        public void CameraRotateTrue() => _animator.SetBool("Rotate", true);
     }
 }

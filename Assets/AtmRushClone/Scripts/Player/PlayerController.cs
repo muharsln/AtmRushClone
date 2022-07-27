@@ -15,12 +15,16 @@ namespace AtmRushClone.Player
         [Header("Forward Move")]
         [SerializeField] private float _forwardMoveSpeed;
 
+        [Header("Cat")]
+        [SerializeField] private Animator _catAnim;
+
         #region Update
         private void Update()
         {
             if (GameManager.Instance.gameStat == GameManager.GameStat.Play)
             {
                 PlayerMevement();
+                CatSetAnim("Run", true);
             }
         }
         #endregion
@@ -41,6 +45,12 @@ namespace AtmRushClone.Player
                 newPos.x = ((_endPos.x - _firsPos.x) / (Screen.width / 30f)) + _posX;
                 newPos.x = Mathf.Clamp(newPos.x, _minX, _maxX);
                 _transToMove.localPosition = new Vector3(newPos.x, _transToMove.localPosition.y, _transToMove.localPosition.z);
+                Valuable.ValuablesController.Instance.MoveMoneyElement();
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                Valuable.ValuablesController.Instance.MoveOrigin();
             }
             #endregion
 
@@ -49,5 +59,10 @@ namespace AtmRushClone.Player
             #endregion
         }
         #endregion
+
+        private void CatSetAnim(string animName, bool animBool)
+        {
+            _catAnim.SetBool(animName, animBool);
+        }
     }
 }
