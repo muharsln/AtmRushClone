@@ -45,12 +45,12 @@ namespace AtmRushClone.Player
                 newPos.x = ((_endPos.x - _firsPos.x) / (Screen.width / 30f)) + _posX;
                 newPos.x = Mathf.Clamp(newPos.x, _minX, _maxX);
                 _transToMove.localPosition = new Vector3(newPos.x, _transToMove.localPosition.y, _transToMove.localPosition.z);
-                Valuable.ValuablesController.Instance.MoveMoneyElement();
+                Valuables.ValuableController.Instance.MoveMoneyElement();
             }
 
             if (Input.GetMouseButtonUp(0))
             {
-                Valuable.ValuablesController.Instance.MoveOrigin();
+                Valuables.ValuableController.Instance.MoveOrigin();
             }
             #endregion
 
