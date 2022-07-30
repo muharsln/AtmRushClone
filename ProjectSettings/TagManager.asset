@@ -8,6 +8,7 @@ TagManager:
   - Unstacked
   - Obstacle
   - Passage
+  - ATM
   layers:
   - Default
   - TransparentFX
