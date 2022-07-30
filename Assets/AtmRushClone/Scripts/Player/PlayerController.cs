@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,11 @@ namespace AtmRushClone.Player
 {
     public class PlayerController : MonoBehaviour
     {
+        #region Singleton
+        public static PlayerController Instance { get; private set; }
+        #endregion
+
+        #region Variables
         [Header("Move Referance")]
         [SerializeField] private Transform _transToMove;
         [SerializeField] private float _minX, _maxX;
@@ -15,8 +21,20 @@ namespace AtmRushClone.Player
         [Header("Forward Move")]
         [SerializeField] private float _forwardMoveSpeed;
 
-        [Header("Cat")]
-        [SerializeField] private Animator _catAnim;
+        [Header("Chracter")]
+        [SerializeField] private Animator _characterAnim;
+
+        [Header("Score")]
+        [SerializeField] private TMPro.TextMeshPro _moneyCountText;
+        private int _moneyAmount;
+        #endregion
+
+        #region Awake
+        private void Awake()
+        {
+            Instance = this;
+        }
+        #endregion
 
         #region Update
         private void Update()
@@ -24,7 +42,7 @@ namespace AtmRushClone.Player
             if (GameManager.Instance.gameStat == GameManager.GameStat.Play)
             {
                 PlayerMevement();
-                CatSetAnim("Run", true);
+                CharacterSetAnim("Run", true);
             }
         }
         #endregion
@@ -60,9 +78,19 @@ namespace AtmRushClone.Player
         }
         #endregion
 
-        private void CatSetAnim(string animName, bool animBool)
+        #region Animation
+        private void CharacterSetAnim(string animName, bool animBool)
         {
-            _catAnim.SetBool(animName, animBool);
+            _characterAnim.SetBool(animName, animBool);
         }
+        #endregion
+
+        #region Money
+        public void ValuableCounterChanging(int value)
+        {
+            _moneyAmount += value;
+            _moneyCountText.text = _moneyAmount.ToString();
+        }
+        #endregion
     }
 }
