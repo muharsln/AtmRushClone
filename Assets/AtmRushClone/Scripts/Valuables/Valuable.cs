@@ -9,16 +9,33 @@ namespace AtmRushClone.Valuables
     {
         private int _childNum = 0;
         private void OnTriggerEnter(Collider other)
+
         {
-            if (other.CompareTag("Unstacked") && !ValuableController.Instance.moneyList.Contains(other.gameObject))
+            // Temas ettiðimiz objenin tagý Unstacked ise ve valuable listesinde yer almýyor ise
+            if (other.CompareTag("Unstacked") && !ValuableController.Instance.valuableList.Contains(other.gameObject))
             {
                 other.gameObject.tag = "Stacked";
                 other.GetComponent<BoxCollider>().isTrigger = true;
                 other.gameObject.AddComponent<Valuable>();
-                //other.gameObject.AddComponent<Rigidbody>();
-                //other.GetComponent<Rigidbody>().isKinematic = true;
+                ValuableController.Instance.StackMoney(other.gameObject, ValuableController.Instance.valuableList.Count - 1);
+                Player.PlayerController.Instance.ValuableCounterChanging(1);
+            }
 
-                ValuableController.Instance.StackMoney(other.gameObject, ValuableController.Instance.moneyList.Count - 1);
+            // Temas ettiðimiz objenin tagý Obstacle 
+            if (other.CompareTag("Obstacle"))
+            {
+                Player.PlayerController.Instance.ValuableCounterChanging(-(_childNum + 1));
+                transform.GetChild(3).transform.GetChild(_childNum).gameObject.GetComponent<ParticleSystem>().Play();
+                ValuableController.Instance.UnstackMoney(gameObject);
+                transform.GetChild(_childNum).gameObject.SetActive(false);
+            }
+
+            if (other.CompareTag("ATM"))
+            {
+                //Atm.AtmController.Instance.AtmCounterChanging(_childNum + 1);
+                other.GetComponent<Atm.AtmController>().AtmCounterChanging(_childNum + 1);
+                ValuableController.Instance.UnstackMoney(gameObject);
+                transform.GetChild(_childNum).gameObject.SetActive(false);
             }
         }
 
@@ -32,6 +49,7 @@ namespace AtmRushClone.Valuables
                     _childNum++;
                     transform.GetChild(_childNum).transform.DOScale(Vector3.one * 1.5f, 0.1f).OnComplete(()
                     => transform.GetChild(_childNum).transform.DOScale(Vector3.one, 0.1f));
+                    Player.PlayerController.Instance.ValuableCounterChanging(1);
                 }
                 transform.GetChild(_childNum).gameObject.SetActive(true);
             }
