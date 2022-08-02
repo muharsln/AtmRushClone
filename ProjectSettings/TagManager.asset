@@ -9,6 +9,7 @@ TagManager:
   - Obstacle
   - Passage
   - ATM
+  - FinishLine
   layers:
   - Default
   - TransparentFX
