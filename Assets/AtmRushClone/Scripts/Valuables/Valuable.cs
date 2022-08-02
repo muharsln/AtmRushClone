@@ -37,6 +37,13 @@ namespace AtmRushClone.Valuables
                 ValuableController.Instance.UnstackMoney(gameObject);
                 transform.GetChild(_childNum).gameObject.SetActive(false);
             }
+
+            if (other.CompareTag("Finish"))
+            {
+                transform.parent = null;
+                ValuableController.Instance.valuableList.Remove(gameObject);
+                transform.DOLocalMoveX(-7f, 0.5f);
+            }
         }
 
         private void OnTriggerExit(Collider other)

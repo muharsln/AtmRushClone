@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace AtmRushClone.Character
@@ -10,6 +11,17 @@ namespace AtmRushClone.Character
             {
                 other.gameObject.GetComponent<Atm.AtmController>().SmoothMoveDown();
             }
+
+            if (other.CompareTag("FinishLine"))
+            {
+                StartCoroutine(Stop());
+            }
+        }
+
+        private IEnumerator Stop()
+        {
+            yield return new WaitForSeconds(1.5f);
+            GameManager.Instance.gameStat = GameManager.GameStat.Finish;
         }
     }
 }

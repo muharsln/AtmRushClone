@@ -44,6 +44,11 @@ namespace AtmRushClone.Player
                 PlayerMevement();
                 CharacterSetAnim("Run", true);
             }
+
+            if (GameManager.Instance.gameStat == GameManager.GameStat.Finish)
+            {
+                CharacterSetAnim("Run", false);
+            }
         }
         #endregion
 
